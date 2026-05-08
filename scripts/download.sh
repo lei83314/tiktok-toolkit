@@ -17,9 +17,14 @@ fi
 OUTDIR="./downloads"
 mkdir -p "$OUTDIR"
 
+# 默认从 Chrome 借 cookies（抖音/小红书等中文站点必需）
+# 可用环境变量切换浏览器: BROWSER=safari ./scripts/download.sh ...
+BROWSER="${BROWSER:-chrome}"
+
 for url in "$@"; do
-  echo "⬇️  下载: $url"
+  echo "⬇️  下载: $url  (cookies from $BROWSER)"
   yt-dlp \
+    --cookies-from-browser "$BROWSER" \
     -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' \
     --merge-output-format mp4 \
     --write-thumbnail \
